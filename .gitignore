@@ -4,7 +4,7 @@
 y_*
 *.pdf
  
-## Build
+## Build output
 *build*
 *.a
 *.so
@@ -12,6 +12,9 @@ y_*
 *.d
 libpan.so
 pan
+src/DevTypes.hh
+src/TaDict.*
+
  
 ##Other
 .DS_*
