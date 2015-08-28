@@ -1,0 +1,17 @@
+*~
+*.rndm
+*.macro
+y_*
+*.pdf
+ 
+## Build
+*build*
+*.a
+*.so
+*.o
+*.d
+libpan.so
+pan
+ 
+##Other
+.DS_*
