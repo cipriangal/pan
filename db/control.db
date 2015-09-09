@@ -15,11 +15,10 @@
     satcut 60000
 #    lobeam  25000 
 #    lobeam  3000 
-#    lobeam  0.002
-#    lobeamc 0.002
+    lobeam  0.002
 #    burpcut 1000
-    ncuts 4
-    cutnames Evt_seq Pair_seq Startup Det_saturate
+    ncuts 5
+    cutnames Evt_seq Pair_seq Startup Det_saturate Low_beam
     extlo 10 10 25 25 0 10 5
     exthi 1200 40 25 25 1 1200 10
 # Blinding Settings
