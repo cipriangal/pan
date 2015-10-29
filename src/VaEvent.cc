@@ -479,14 +479,20 @@ VaEvent::Decode(TaDevice& devices)
 
       // ADCX data have to be masked out and checked before conversion
       // to floating point
-      if (devices.IsAdcx (key)) {
+      if (devices.IsAdcx (key)) {//FIXME
+        //cout << endl << "=====adcx======"<<endl<< "adcx key = "<<key<<"    data = 0x"<<hex<<rawd<<dec<<endl;
+	//cout << "offset pointer <raw number> " <<devices.GetOffset(key) <<" "<< devices.GetEvPointer(key)<<" "<<i<<" "<<endl;
         if (DECODE_DEBUG) cout << endl << "==============="<<endl<< "adcx key = "<<key<<"    data = 0x"<<rawd<<dec<<endl;
 	fData[key] = UnpackAdcx (rawd, key);
         adcxcrlist |= (1 << icra);
       } else if (devices.IsVqwk (key)) {
+        //cout << endl << "=====vqwk======"<<endl<< "adcx key = "<<key<<"    data = 0x"<<hex<<rawd<<dec<<endl;
+	//cout << "offset pointer <raw number> " <<devices.GetOffset(key) <<" "<< devices.GetEvPointer(key)<<" "<<i<<" "<<endl;
         if (DECODE_DEBUG) cout << endl << "==============="<<endl<< "Vqwk key = "<<key<<"    data = 0x"<<hex << rawd<<dec<< endl;	
 	fData[key] = UnpackVqwk ((UInt_t) rawd, key);
       } else {
+        //cout << endl << "=====0000======"<<endl<< "adcx key = "<<key<<"    data = 0x"<<hex<<rawd<<dec<<endl;
+	//cout << "offset pointer <raw number> " <<devices.GetOffset(key) <<" "<< devices.GetEvPointer(key)<<" "<<i<<" "<<endl;
 	fData[key] = rawd;
       }
 
@@ -1825,7 +1831,7 @@ Int_t VaEvent::DecodeCrates(TaDevice& devices) {
        lentot  = lentot + fLenroc[fIrn[iroc]] + 1;
     } 
     numroc++;
-    if(DECODE_DEBUG) {
+    if(DECODE_DEBUG) {//FIXME
         cout << "Roc ptr " <<dec<<numroc<<"  "<<iroc+1;
         cout << "  "<<fIrn[iroc]<<"  "<<fN1roc[fIrn[iroc]];
         cout << "  "<<fLenroc[fIrn[iroc]];
@@ -1909,8 +1915,11 @@ Int_t VaEvent::DecodeCrates(TaDevice& devices) {
       istart = fN1roc[fIrn[iroc]]+1;
       istop = fN1roc[fIrn[iroc]]+fLenroc[fIrn[iroc]];
       ipt = istart; 
-      while (ipt++ < istop) {
-	devices.FindHeaders(fIrn[iroc], ipt, fEvBuffer[ipt]);
+      //devices.PrintHeaders();//FIXME
+      while (ipt++ < istop) {//FIXME
+	//cout<<"index ROC# buffer: "<<dec<<ipt<<" "<<fIrn[iroc]<<" "<<hex<<fEvBuffer[ipt]<<dec<<endl;
+ 	devices.FindHeaders(fIrn[iroc], ipt, fEvBuffer[ipt]);
+	//cout<<"index ROC# buffer: "<<dec<<ipt<<" "<<fIrn[iroc]<<" "<<hex<<fEvBuffer[ipt]<<dec<<endl<<endl;
       }
     }
   }
@@ -2488,7 +2497,7 @@ VaEvent::UnpackAdcx (Int_t rawd, Int_t key)
   // we do no checking.  If there's a problem it should be caught in
   // checking the ADC signal.
 
-  Int_t lprint=0;
+  Int_t lprint=0;//FIXME
 
   Int_t mask31x   = 0x80000000;   // Header bit mask
   Int_t mask3029x = 0x60000000;   // Channel number mask
@@ -2565,7 +2574,7 @@ VaEvent::UnpackAdcx (Int_t rawd, Int_t key)
   // Here are checks common to all (or almost all) data types
 
   if (lprint) {
-   // RawDump();
+    // RawDump();
     cout << "Ev num "<<fEvNum<<endl;
     cout << "ADCX  "<<key<<"   "<<(key-ADCXOFF)/4<<endl;
     cout << "Raw Data:  0x"<<hex<<rawd<<"   dvalue = "<<dec<<act_dvalue<<endl;
@@ -2707,7 +2716,7 @@ VaEvent::UnpackVqwk (UInt_t rawd, Int_t key)
 //   Int_t vqwk;  // vqwk number
 //   Int_t exp_chan;  // Expected ADC channel number
   Double_t retval; 
-  lrawd = rawd;
+  lrawd = static_cast<int32_t>(rawd);
   if (key >= VQWKOFF && key < VQWKOFF + 8 * 7 * VQWKNUM) { // vqwk device
     // Raw integrated signal or possibly number of samples
     keyo = key - VQWKOFF;
