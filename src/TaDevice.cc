@@ -358,12 +358,16 @@ void TaDevice::AddTiedDevices(TaKeyMap& keymap) {
 
 
 void TaDevice::FindHeaders(const Int_t& roc, 
-      const Int_t& ipt, const Int_t& data) {
+			   const Int_t& ipt, const Int_t& data) {//FIXME why are these refferences?!
 // Find the pointer to the header for the various devices.
 // The "fundamental" devices are ADC, ADCX, SCALER, VQWK, TIMEBOARD, TIR.
 // roc==0 is an error and probably means CODA is not set up 
 // correctly. Although roc==0 is logically possible in CODA
 // it is forbidden because of database conventions.
+  Int_t print=0;
+  if(print) cout<<" FindHeaders: star "<<dec<<roc<<" "<<ipt<<" "<<hex<<data<<dec
+		<<hex<<(data&fgAdcxMask)<<dec<<endl;
+
   if (roc <= 0 || roc > MAXROC) {
     cout << "TaDevice::FindHeaders::ERROR:  ";
     cout << "illegal value of roc "<<roc<<endl;
@@ -371,36 +375,55 @@ void TaDevice::FindHeaders(const Int_t& roc,
   }
   if ((data & fgAdcMask) == fgAdcHeader) {
     fAdcptr[roc] = ipt;
+    if(print) cout<<" FindHeaders: adc "<<dec<<roc<<" "<<ipt<<" "
+		  <<hex<<data<<" "<<fgAdcMask<<" "<<fgAdcHeader<<endl;
     return;
   }     
   if ((data & fgAdcxMask) == fgAdcxHeader) {
     fAdcxptr[roc] = ipt;
+      if(print) cout<<" FindHeaders: adcx "<<dec<<roc<<" "<<ipt<<" "
+		    <<hex<<data<<" "<<fgAdcxMask<<" "<<fgAdcxHeader<<endl;
     return;
   }     
   if ((data & fgVqwkMask) == fgVqwkHeader) {
     fVqwkptr[roc] = ipt;
+      if(print) cout<<" FindHeaders: vqwk "<<dec<<roc<<" "<<ipt<<" "
+		    <<hex<<data<<" "<<fgVqwkMask<<" "<<fgVqwkHeader<<endl;
     return;
   }     
   if ((data & fgScalMask) == fgScalHeader) {
     fScalptr[roc] = ipt;
+      if(print) cout<<" FindHeaders: scal "<<dec<<roc<<" "<<ipt<<" "
+		    <<hex<<data<<" "<<fgAdcMask<<" "<<fgAdcHeader<<endl;
     return;
   }     
   if ((data & fgPvdScaMask) == fgPvdScaHeader) {
     fScalptr[roc] = ipt;
+      if(print) cout<<" FindHeaders: pvdsca "<<dec<<roc<<" "<<ipt<<" "
+		    <<hex<<data<<" "<<fgAdcMask<<" "<<fgAdcHeader<<endl;
     return;
   } 
   if ((data & fgTbdMask) == fgTbdHeader) {
     fTbdptr[roc] = ipt;
+      if(print) cout<<" FindHeaders: tbd "<<dec<<roc<<" "<<ipt<<" "
+		    <<hex<<data<<" "<<fgAdcMask<<" "<<fgAdcHeader<<endl;
     return;
   }     
   if ((data & fgTirMask) == fgTirHeader) {
     fTirptr[roc] = ipt;
+      if(print) cout<<" FindHeaders: tir "<<dec<<roc<<" "<<ipt<<" "
+		    <<hex<<data<<" "<<fgTirMask<<" "<<fgTirHeader<<endl;
     return;
   }     
   if ((data & fgDaqMask) == fgDaqHeader) {
     fDaqptr[roc] = ipt;
+      if(print) cout<<" FindHeaders: daq "<<dec<<roc<<" "<<ipt<<" "
+		    <<hex<<data<<" "<<fgDaqMask<<" "<<fgDaqHeader<<endl;
     return;
   }     
+
+  if(print) cout<<" FindHeaders: end "<<dec<<roc<<" "<<ipt<<" "<<hex<<data<<dec<<endl;
+
   return;
 }
 
